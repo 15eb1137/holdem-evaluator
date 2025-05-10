@@ -9,6 +9,7 @@ export class Evaluator {
   private cards: Card[];
   public fourOfAKind: boolean = false;
   public flush: boolean = false;
+  public straight: boolean = false;
 
   constructor(cards: Card[]) {
     this.cards = cards;
@@ -20,6 +21,8 @@ export class Evaluator {
     this.evaluateFourOfAKind();
     // Check for flush condition
     this.evaluateFlush();
+    // Check for straight condition
+    this.evaluateStraight();
   }
 
   // Check if the hand contains four of a kind of the same rank
@@ -61,6 +64,49 @@ export class Evaluator {
         this.flush = true;
         return;
       }
+    }
+  }
+
+  // Check if the hand contains five consecutive cards (straight)
+  private evaluateStraight(): void {
+    // Convert card ranks to numeric values
+    const rankValues: number[] = this.cards.map((card) => {
+      switch (card.rank) {
+        case "A": return 14; // Ace high
+        case "K": return 13;
+        case "Q": return 12;
+        case "J": return 11;
+        case "T": return 10;
+        default: return parseInt(card.rank);
+      }
+    });
+
+    // Sort ranks in descending order and remove duplicates
+    const uniqueRanks = [...new Set(rankValues)].sort((a, b) => b - a);
+
+    // Check for regular straight
+    for (let i = 0; i <= uniqueRanks.length - 5; i++) {
+      if (
+        uniqueRanks[i] - uniqueRanks[i + 4] === 4 &&
+        uniqueRanks[i] - uniqueRanks[i + 1] === 1 &&
+        uniqueRanks[i + 1] - uniqueRanks[i + 2] === 1 &&
+        uniqueRanks[i + 2] - uniqueRanks[i + 3] === 1 &&
+        uniqueRanks[i + 3] - uniqueRanks[i + 4] === 1
+      ) {
+        this.straight = true;
+        return;
+      }
+    }
+
+    // Special case: A-5-4-3-2 (Ace low straight)
+    if (
+      uniqueRanks.includes(14) && // Ace
+      uniqueRanks.includes(5) &&
+      uniqueRanks.includes(4) &&
+      uniqueRanks.includes(3) &&
+      uniqueRanks.includes(2)
+    ) {
+      this.straight = true;
     }
   }
 }
