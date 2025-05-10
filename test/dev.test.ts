@@ -34,3 +34,37 @@ Deno.test("Four of a kind condition", () => {
     "The made hand does not meet the four of a kind condition",
   );
 });
+
+Deno.test("Flush condition", () => {
+  // Test case for flush condition
+  const cards1 = [
+    { rank: "2", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "6", suit: "s" },
+    { rank: "8", suit: "s" },
+    { rank: "T", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "A", suit: "d" },
+  ];
+
+  const flush = new Evaluator(cards1);
+  flush.evaluate();
+  assert(flush.flush, "The made hand meets the flush condition");
+
+  // Test case for no flush condition
+  const cards2 = [
+    { rank: "2", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "6", suit: "s" },
+    { rank: "8", suit: "s" },
+    { rank: "T", suit: "h" },
+    { rank: "Q", suit: "d" },
+    { rank: "A", suit: "c" },
+  ];
+  const noFlush = new Evaluator(cards2);
+  noFlush.evaluate();
+  assert(
+    !noFlush.flush,
+    "The made hand does not meet the flush condition",
+  );
+});
