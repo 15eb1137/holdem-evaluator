@@ -68,3 +68,54 @@ Deno.test("Flush condition", () => {
     "The made hand does not meet the flush condition",
   );
 });
+
+Deno.test("Straight condition", () => {
+  // Test case for straight condition
+  const cards1 = [
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "h" },
+    { rank: "4", suit: "d" },
+    { rank: "5", suit: "c" },
+    { rank: "6", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+
+  const straight = new Evaluator(cards1);
+  straight.evaluate();
+  assert(straight.straight, "The made hand meets the straight condition");
+
+  // Test case for no straight condition
+  const cards2 = [
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "h" },
+    { rank: "4", suit: "d" },
+    { rank: "5", suit: "c" },
+    { rank: "K", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "J", suit: "d" },
+  ];
+  const noStraight = new Evaluator(cards2);
+  noStraight.evaluate();
+  assert(
+    !noStraight.straight,
+    "The made hand does not meet the straight condition",
+  );
+
+  // Test case for straight with Ace low
+  const cards3 = [
+    { rank: "A", suit: "s" },
+    { rank: "2", suit: "h" },
+    { rank: "3", suit: "d" },
+    { rank: "4", suit: "c" },
+    { rank: "5", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+  const straightWithAceLow = new Evaluator(cards3);
+  straightWithAceLow.evaluate();
+  assert(
+    straightWithAceLow.straight,
+    "The made hand meets the straight condition with Ace low",
+  );
+});
