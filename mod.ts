@@ -11,6 +11,7 @@ export class Evaluator {
   public flush: boolean = false;
   public straight: boolean = false;
   public threeOfAKind: boolean = false;
+  public twoPairs: boolean = false;
 
   constructor(cards: Card[]) {
     this.cards = cards;
@@ -26,6 +27,8 @@ export class Evaluator {
     this.evaluateStraight();
     // Check for three of a kind condition
     this.evaluateThreeOfAKind();
+    // Check for two pairs condition
+    this.evaluateTwoPairs();
   }
 
   // Helper method to count occurrences of each rank
@@ -141,6 +144,24 @@ export class Evaluator {
         this.threeOfAKind = true;
         return;
       }
+    }
+  }
+
+  // Check if the hand contains exactly two pairs
+  private evaluateTwoPairs(): void {
+    const rankCounts = this.countRanks();
+    let pairCount = 0;
+
+    // Count how many pairs exist in the hand
+    for (const rank in rankCounts) {
+      if (rankCounts[rank] === 2) {
+        pairCount++;
+      }
+    }
+
+    // If exactly two pairs are found, set twoPairs to true
+    if (pairCount === 2) {
+      this.twoPairs = true;
     }
   }
 }
