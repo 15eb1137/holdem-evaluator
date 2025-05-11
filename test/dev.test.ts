@@ -1,6 +1,59 @@
 import { assert } from "@std/assert";
 import { Evaluator } from "../mod.ts";
 
+Deno.test("Straight flush condition", () => {
+  // Test case for straight flush condition
+  const cards1 = [
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "5", suit: "s" },
+    { rank: "6", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+  const straightFlush = new Evaluator(cards1);
+  straightFlush.evaluate();
+  assert(
+    straightFlush.straightFlush,
+    "The made hand meets the straight flush condition",
+  );
+
+  // Test case for no straight flush condition
+  const cards2 = [
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "5", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "Q", suit: "d" },
+    { rank: "K", suit: "d" },
+  ];
+  const noStraightFlush = new Evaluator(cards2);
+  noStraightFlush.evaluate();
+  assert(
+    !noStraightFlush.straightFlush,
+    "The made hand does not meet the straight flush condition",
+  );
+
+  // Test case for straight flush with Ace low
+  const cards3 = [
+    { rank: "A", suit: "s" },
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "5", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+  const straightFlushWithAceLow = new Evaluator(cards3);
+  straightFlushWithAceLow.evaluate();
+  assert(
+    straightFlushWithAceLow.straightFlush,
+    "The made hand meets the straight flush condition with Ace low",
+  );
+});
+
 Deno.test("Four of a kind condition", () => {
   // Test case for four of a kind condition
   const cards1 = [
