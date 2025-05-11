@@ -119,3 +119,40 @@ Deno.test("Straight condition", () => {
     "The made hand meets the straight condition with Ace low",
   );
 });
+
+Deno.test("Three of a kind condition", () => {
+  // Test case for three of a kind condition
+  const cards1 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "A", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "h" },
+    { rank: "3", suit: "d" },
+  ];
+
+  const threeOfAKind = new Evaluator(cards1);
+  threeOfAKind.evaluate();
+  assert(
+    threeOfAKind.threeOfAKind,
+    "The made hand meets the three of a kind condition",
+  );
+
+  // Test case for no three of a kind condition
+  const cards2 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "2", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "3", suit: "s" },
+    { rank: "3", suit: "h" },
+    { rank: "4", suit: "d" },
+  ];
+  const noThreeOfAKind = new Evaluator(cards2);
+  noThreeOfAKind.evaluate();
+  assert(
+    !noThreeOfAKind.threeOfAKind,
+    "The made hand does not meet the three of a kind condition",
+  );
+});
