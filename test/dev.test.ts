@@ -1,6 +1,41 @@
 import { assert } from "@std/assert";
 import { Evaluator } from "../mod.ts";
 
+Deno.test("Royal flush condition", () => {
+  // Test case for royal flush condition
+  const cards1 = [
+    { rank: "T", suit: "s" },
+    { rank: "J", suit: "s" },
+    { rank: "Q", suit: "s" },
+    { rank: "K", suit: "s" },
+    { rank: "A", suit: "s" },
+    { rank: "2", suit: "h" },
+    { rank: "3", suit: "d" },
+  ];
+  const royalFlush = new Evaluator(cards1);
+  royalFlush.evaluate();
+  assert(
+    royalFlush.royalFlush,
+    "The made hand meets the royal flush condition",
+  );
+  // Test case for no royal flush condition
+  const cards2 = [
+    { rank: "K", suit: "s" },
+    { rank: "Q", suit: "s" },
+    { rank: "J", suit: "s" },
+    { rank: "T", suit: "s" },
+    { rank: "9", suit: "s" },
+    { rank: "2", suit: "d" },
+    { rank: "3", suit: "d" },
+  ];
+  const noRoyalFlush = new Evaluator(cards2);
+  noRoyalFlush.evaluate();
+  assert(
+    !noRoyalFlush.royalFlush,
+    "The made hand does not meet the royal flush condition",
+  );
+});
+
 Deno.test("Straight flush condition", () => {
   // Test case for straight flush condition
   const cards1 = [
