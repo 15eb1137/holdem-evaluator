@@ -8,6 +8,7 @@ interface Card {
 export class Evaluator {
   private cards: Card[];
   public fourOfAKind: boolean = false;
+  public straightFlush: boolean = false;
   public fullHouse: boolean = false;
   public flush: boolean = false;
   public straight: boolean = false;
@@ -23,6 +24,8 @@ export class Evaluator {
   evaluate(): void {
     // Check for four of a kind condition
     this.evaluateFourOfAKind();
+    // Check for straight flush condition
+    this.evaluateStraightFlush();
     // Check for full house condition
     this.evaluateFullHouse();
     // Check for flush condition
@@ -91,6 +94,74 @@ export class Evaluator {
     }
   }
 
+  // Check if the hand contains a straight flush
+  private evaluateStraightFlush(): void {
+    // Get cards of each suit
+    const suitedCards: { [suit: string]: Card[] } = {};
+    
+    for (const card of this.cards) {
+      if (!suitedCards[card.suit]) {
+        suitedCards[card.suit] = [];
+      }
+      suitedCards[card.suit].push(card);
+    }
+    
+    // Check each suit group for a straight
+    for (const suit in suitedCards) {
+      const cards = suitedCards[suit];
+      
+      // Only proceed if we have at least 5 cards of this suit
+      if (cards.length >= 5) {
+        // Convert card ranks to numeric values
+        const rankValues: number[] = cards.map((card) => {
+          switch (card.rank) {
+            case "A":
+              return 14; // Ace high
+            case "K":
+              return 13;
+            case "Q":
+              return 12;
+            case "J":
+              return 11;
+            case "T":
+              return 10;
+            default:
+              return parseInt(card.rank);
+          }
+        });
+        
+        // Sort ranks in descending order and remove duplicates
+        const uniqueRanks = [...new Set(rankValues)].sort((a, b) => b - a);
+        
+        // Check for regular straight
+        for (let i = 0; i <= uniqueRanks.length - 5; i++) {
+          if (
+            uniqueRanks[i] - uniqueRanks[i + 4] === 4 &&
+            uniqueRanks[i] - uniqueRanks[i + 1] === 1 &&
+            uniqueRanks[i + 1] - uniqueRanks[i + 2] === 1 &&
+            uniqueRanks[i + 2] - uniqueRanks[i + 3] === 1 &&
+            uniqueRanks[i + 3] - uniqueRanks[i + 4] === 1
+          ) {
+            this.straightFlush = true;
+            return;
+          }
+        }
+        
+        // Special case: A-5-4-3-2 (Ace low straight)
+        if (
+          uniqueRanks.includes(14) && // Ace
+          uniqueRanks.includes(5) &&
+          uniqueRanks.includes(4) &&
+          uniqueRanks.includes(3) &&
+          uniqueRanks.includes(2)
+        ) {
+          this.straightFlush = true;
+          return;
+        }
+      }
+    }
+  }
+  
   // Check if the hand contains five consecutive cards (straight)
   private evaluateStraight(): void {
     // Convert card ranks to numeric values
