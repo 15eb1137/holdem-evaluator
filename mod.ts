@@ -7,8 +7,9 @@ interface Card {
 // Evaluator class to evaluate poker hands
 export class Evaluator {
   private cards: Card[];
-  public fourOfAKind: boolean = false;
+  public royalFlush: boolean = false;
   public straightFlush: boolean = false;
+  public fourOfAKind: boolean = false;
   public fullHouse: boolean = false;
   public flush: boolean = false;
   public straight: boolean = false;
@@ -22,12 +23,12 @@ export class Evaluator {
 
   // Method to evaluate the hand
   evaluate(): void {
-    // Check for four of a kind condition
-    this.evaluateFourOfAKind();
-    // Check for straight flush condition
+    // Check for straight flush condition (includes royal flush)
     this.evaluateStraightFlush();
     // Check for full house condition
     this.evaluateFullHouse();
+    // Check for four of a kind condition
+    this.evaluateFourOfAKind();
     // Check for flush condition
     this.evaluateFlush();
     // Check for straight condition
@@ -98,18 +99,18 @@ export class Evaluator {
   private evaluateStraightFlush(): void {
     // Get cards of each suit
     const suitedCards: { [suit: string]: Card[] } = {};
-    
+
     for (const card of this.cards) {
       if (!suitedCards[card.suit]) {
         suitedCards[card.suit] = [];
       }
       suitedCards[card.suit].push(card);
     }
-    
+
     // Check each suit group for a straight
     for (const suit in suitedCards) {
       const cards = suitedCards[suit];
-      
+
       // Only proceed if we have at least 5 cards of this suit
       if (cards.length >= 5) {
         // Convert card ranks to numeric values
@@ -129,10 +130,23 @@ export class Evaluator {
               return parseInt(card.rank);
           }
         });
-        
+
         // Sort ranks in descending order and remove duplicates
         const uniqueRanks = [...new Set(rankValues)].sort((a, b) => b - a);
-        
+
+        // Check for Royal Flush (A, K, Q, J, T of the same suit)
+        if (
+          uniqueRanks.includes(14) && // Ace
+          uniqueRanks.includes(13) && // King
+          uniqueRanks.includes(12) && // Queen
+          uniqueRanks.includes(11) && // Jack
+          uniqueRanks.includes(10) // Ten
+        ) {
+          this.royalFlush = true;
+          this.straightFlush = true; // Royal flush is also a straight flush
+          return;
+        }
+
         // Check for regular straight
         for (let i = 0; i <= uniqueRanks.length - 5; i++) {
           if (
@@ -146,7 +160,7 @@ export class Evaluator {
             return;
           }
         }
-        
+
         // Special case: A-5-4-3-2 (Ace low straight)
         if (
           uniqueRanks.includes(14) && // Ace
@@ -161,7 +175,7 @@ export class Evaluator {
       }
     }
   }
-  
+
   // Check if the hand contains five consecutive cards (straight)
   private evaluateStraight(): void {
     // Convert card ranks to numeric values
