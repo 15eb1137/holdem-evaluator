@@ -10,6 +10,7 @@ export class Evaluator {
   public fourOfAKind: boolean = false;
   public flush: boolean = false;
   public straight: boolean = false;
+  public threeOfAKind: boolean = false;
 
   constructor(cards: Card[]) {
     this.cards = cards;
@@ -23,11 +24,12 @@ export class Evaluator {
     this.evaluateFlush();
     // Check for straight condition
     this.evaluateStraight();
+    // Check for three of a kind condition
+    this.evaluateThreeOfAKind();
   }
 
-  // Check if the hand contains four of a kind of the same rank
-  private evaluateFourOfAKind(): void {
-    // Count occurrences of each rank
+  // Helper method to count occurrences of each rank
+  private countRanks(): { [rank: string]: number } {
     const rankCounts: { [rank: string]: number } = {};
 
     for (const card of this.cards) {
@@ -36,6 +38,13 @@ export class Evaluator {
       }
       rankCounts[card.rank]++;
     }
+
+    return rankCounts;
+  }
+
+  // Check if the hand contains four of a kind of the same rank
+  private evaluateFourOfAKind(): void {
+    const rankCounts = this.countRanks();
 
     // Check if any rank appears exactly 4 times
     for (const rank in rankCounts) {
@@ -46,9 +55,8 @@ export class Evaluator {
     }
   }
 
-  // Check if the hand contains five or more cards of the same suit (flush)
-  private evaluateFlush(): void {
-    // Count occurrences of each suit
+  // Helper method to count occurrences of each suit
+  private countSuits(): { [suit: string]: number } {
     const suitCounts: { [suit: string]: number } = {};
 
     for (const card of this.cards) {
@@ -57,6 +65,13 @@ export class Evaluator {
       }
       suitCounts[card.suit]++;
     }
+
+    return suitCounts;
+  }
+
+  // Check if the hand contains five or more cards of the same suit (flush)
+  private evaluateFlush(): void {
+    const suitCounts = this.countSuits();
 
     // Check if any suit appears 5 or more times
     for (const suit in suitCounts) {
@@ -72,12 +87,18 @@ export class Evaluator {
     // Convert card ranks to numeric values
     const rankValues: number[] = this.cards.map((card) => {
       switch (card.rank) {
-        case "A": return 14; // Ace high
-        case "K": return 13;
-        case "Q": return 12;
-        case "J": return 11;
-        case "T": return 10;
-        default: return parseInt(card.rank);
+        case "A":
+          return 14; // Ace high
+        case "K":
+          return 13;
+        case "Q":
+          return 12;
+        case "J":
+          return 11;
+        case "T":
+          return 10;
+        default:
+          return parseInt(card.rank);
       }
     });
 
@@ -107,6 +128,19 @@ export class Evaluator {
       uniqueRanks.includes(2)
     ) {
       this.straight = true;
+    }
+  }
+
+  // Check if the hand contains exactly three of a kind of the same rank
+  private evaluateThreeOfAKind(): void {
+    const rankCounts = this.countRanks();
+
+    // Check if any rank appears exactly 3 times
+    for (const rank in rankCounts) {
+      if (rankCounts[rank] === 3) {
+        this.threeOfAKind = true;
+        return;
+      }
     }
   }
 }
