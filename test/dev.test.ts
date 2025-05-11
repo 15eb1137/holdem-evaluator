@@ -229,3 +229,37 @@ Deno.test("Two pairs condition", () => {
     "The made hand does not meet the two pairs condition",
   );
 });
+
+Deno.test("Pair condition", () => {
+  // Test case for a pair condition
+  const cards1 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "2", suit: "d" },
+    { rank: "3", suit: "c" },
+    { rank: "4", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "7", suit: "d" },
+  ];
+
+  const pair = new Evaluator(cards1);
+  pair.evaluate();
+  assert(pair.pair, "The made hand meets the pair condition");
+
+  // Test case for no pair condition
+  const cards2 = [
+    { rank: "A", suit: "s" },
+    { rank: "2", suit: "h" },
+    { rank: "3", suit: "d" },
+    { rank: "4", suit: "c" },
+    { rank: "6", suit: "s" },
+    { rank: "7", suit: "h" },
+    { rank: "8", suit: "d" },
+  ];
+  const noPair = new Evaluator(cards2);
+  noPair.evaluate();
+  assert(
+    !noPair.pair,
+    "The made hand does not meet the pair condition",
+  );
+});
