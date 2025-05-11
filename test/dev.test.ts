@@ -156,3 +156,40 @@ Deno.test("Three of a kind condition", () => {
     "The made hand does not meet the three of a kind condition",
   );
 });
+
+Deno.test("Two pairs condition", () => {
+  // Test case for two pairs condition
+  const cards1 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "2", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "h" },
+    { rank: "6", suit: "d" },
+  ];
+
+  const twoPairs = new Evaluator(cards1);
+  twoPairs.evaluate();
+  assert(
+    twoPairs.twoPairs,
+    "The made hand meets the two pairs condition",
+  );
+
+  // Test case for no two pairs condition
+  const cards2 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "2", suit: "d" },
+    { rank: "3", suit: "c" },
+    { rank: "4", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "7", suit: "d" },
+  ];
+  const noTwoPairs = new Evaluator(cards2);
+  noTwoPairs.evaluate();
+  assert(
+    !noTwoPairs.twoPairs,
+    "The made hand does not meet the two pairs condition",
+  );
+});
