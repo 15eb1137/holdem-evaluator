@@ -35,6 +35,42 @@ Deno.test("Four of a kind condition", () => {
   );
 });
 
+Deno.test("Full house condition", () => {
+  // Test case for full house condition
+  const cards1 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "A", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "2", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "7", suit: "d" },
+  ];
+  const fullHouse = new Evaluator(cards1);
+  fullHouse.evaluate();
+  assert(
+    fullHouse.fullHouse,
+    "The made hand meets the full house condition",
+  );
+
+  // Test case for no full house condition
+  const cards2 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "A", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "3", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "7", suit: "d" },
+  ];
+  const noFullHouse = new Evaluator(cards2);
+  noFullHouse.evaluate();
+  assert(
+    !noFullHouse.fullHouse,
+    "The made hand does not meet the full house condition",
+  );
+});
+
 Deno.test("Flush condition", () => {
   // Test case for flush condition
   const cards1 = [
