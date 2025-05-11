@@ -8,6 +8,7 @@ interface Card {
 export class Evaluator {
   private cards: Card[];
   public fourOfAKind: boolean = false;
+  public fullHouse: boolean = false;
   public flush: boolean = false;
   public straight: boolean = false;
   public threeOfAKind: boolean = false;
@@ -21,6 +22,8 @@ export class Evaluator {
   evaluate(): void {
     // Check for four of a kind condition
     this.evaluateFourOfAKind();
+    // Check for full house condition
+    this.evaluateFullHouse();
     // Check for flush condition
     this.evaluateFlush();
     // Check for straight condition
@@ -162,6 +165,27 @@ export class Evaluator {
     // If exactly two pairs are found, set twoPairs to true
     if (pairCount === 2) {
       this.twoPairs = true;
+    }
+  }
+
+  // Check if the hand contains a full house (three of a kind and a pair)
+  private evaluateFullHouse(): void {
+    const rankCounts = this.countRanks();
+    let hasThreeOfAKind = false;
+    let hasPair = false;
+
+    // Check for three of a kind and pair in the hand
+    for (const rank in rankCounts) {
+      if (rankCounts[rank] === 3) {
+        hasThreeOfAKind = true;
+      } else if (rankCounts[rank] === 2) {
+        hasPair = true;
+      }
+    }
+
+    // If both three of a kind and pair are found, set fullHouse to true
+    if (hasThreeOfAKind && hasPair) {
+      this.fullHouse = true;
     }
   }
 }
