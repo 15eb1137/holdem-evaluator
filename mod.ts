@@ -90,15 +90,15 @@ export const Cards: { [key: string]: Card } = {
 // Evaluator class to evaluate poker hands
 export class Evaluator {
   private cards: Card[];
-  public royalFlush: boolean = false;
-  public straightFlush: boolean = false;
-  public fourOfAKind: boolean = false;
-  public fullHouse: boolean = false;
-  public flush: boolean = false;
-  public straight: boolean = false;
-  public threeOfAKind: boolean = false;
-  public twoPairs: boolean = false;
-  public pair: boolean = false;
+  private royalFlush: boolean = false;
+  private straightFlush: boolean = false;
+  private fourOfAKind: boolean = false;
+  private fullHouse: boolean = false;
+  private flush: boolean = false;
+  private straight: boolean = false;
+  private threeOfAKind: boolean = false;
+  private twoPairs: boolean = false;
+  private pair: boolean = false;
 
   constructor(cards: Card[]) {
     // Validate cards
