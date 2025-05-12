@@ -1,4 +1,4 @@
-import { assert } from "@std/assert";
+import { assert, assertEquals } from "@std/assert";
 import { Evaluator } from "../mod.ts";
 
 Deno.test("Royal flush condition", () => {
@@ -103,7 +103,10 @@ Deno.test("Four of a kind condition", () => {
 
   const fourOfAKind = new Evaluator(cards1);
   fourOfAKind.evaluate();
-  assert(fourOfAKind.fourOfAKind, "The made hand meets the four of a kind condition");
+  assert(
+    fourOfAKind.fourOfAKind,
+    "The made hand meets the four of a kind condition",
+  );
 
   // Test case for no four of a kind condition
   const cards2 = [
@@ -349,5 +352,247 @@ Deno.test("Pair condition", () => {
   assert(
     !noPair.pair,
     "The made hand does not meet the pair condition",
+  );
+});
+
+Deno.test("Evaluate hand", () => {
+  // 0. High card
+  const cards0 = [
+    { rank: "2", suit: "s" },
+    { rank: "4", suit: "h" },
+    { rank: "6", suit: "d" },
+    { rank: "8", suit: "c" },
+    { rank: "T", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "A", suit: "d" },
+  ];
+  const highCard = new Evaluator(cards0);
+  const hand0 = highCard.evaluate();
+  assertEquals(hand0.rank, 0, "The made hand is a high card");
+  assertEquals(hand0.name, "High card", "The made hand name is a high card");
+  assertEquals(
+    hand0.nameJp,
+    "ハイカード",
+    "The made hand name in Japanese is a high card",
+  );
+
+  // 1. Pair
+  const cards1 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "2", suit: "d" },
+    { rank: "3", suit: "c" },
+    { rank: "4", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "7", suit: "d" },
+  ];
+  const pair = new Evaluator(cards1);
+  const hand1 = pair.evaluate();
+  assertEquals(hand1.rank, 1, "The made hand is a pair");
+  assertEquals(hand1.name, "Pair", "The made hand name is a pair");
+  assertEquals(
+    hand1.nameJp,
+    "ワンペア",
+    "The made hand name in Japanese is ワンペア",
+  );
+
+  // 2. Two pairs
+  const cards2 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "2", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "h" },
+    { rank: "6", suit: "d" },
+  ];
+  const twoPair = new Evaluator(cards2);
+  const hand2 = twoPair.evaluate();
+  assertEquals(hand2.rank, 2, "The made hand is two pairs");
+  assertEquals(hand2.name, "Two pairs", "The made hand name is two pairs");
+  assertEquals(
+    hand2.nameJp,
+    "ツーペア",
+    "The made hand name in Japanese is ツーペア",
+  );
+
+  // 3. Three of a kind
+  const cards3 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "A", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "h" },
+    { rank: "6", suit: "d" },
+  ];
+  const threeOfAKind = new Evaluator(cards3);
+  const hand3 = threeOfAKind.evaluate();
+  assertEquals(hand3.rank, 3, "The made hand is three of a kind");
+  assertEquals(
+    hand3.name,
+    "Three of a kind",
+    "The made hand name is three of a kind",
+  );
+  assertEquals(
+    hand3.nameJp,
+    "スリーカード",
+    "The made hand name in Japanese is スリーカード",
+  );
+
+  // 4-1. Straight
+  const cards41 = [
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "h" },
+    { rank: "4", suit: "d" },
+    { rank: "5", suit: "c" },
+    { rank: "6", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+  const straight = new Evaluator(cards41);
+  const hand41 = straight.evaluate();
+  assertEquals(hand41.rank, 4, "The made hand is straight");
+  assertEquals(hand41.name, "Straight", "The made hand name is straight");
+  assertEquals(
+    hand41.nameJp,
+    "ストレート",
+    "The made hand name in Japanese is ストレート",
+  );
+
+  // 4-2. Straight with Ace low
+  const cards42 = [
+    { rank: "A", suit: "s" },
+    { rank: "2", suit: "h" },
+    { rank: "3", suit: "d" },
+    { rank: "4", suit: "c" },
+    { rank: "5", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+  const straightWithAceLow = new Evaluator(cards42);
+  const hand42 = straightWithAceLow.evaluate();
+  assertEquals(hand42.rank, 4, "The made hand is straight with Ace low");
+  assertEquals(
+    hand42.name,
+    "Straight",
+    "The made hand name is straight",
+  );
+  assertEquals(
+    hand42.nameJp,
+    "ストレート",
+    "The made hand name in Japanese is ストレート",
+  );
+
+  // 5. Flush
+  const cards5 = [
+    { rank: "2", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "6", suit: "s" },
+    { rank: "8", suit: "s" },
+    { rank: "T", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "A", suit: "d" },
+  ];
+  const flush = new Evaluator(cards5);
+  const hand5 = flush.evaluate();
+  assertEquals(hand5.rank, 5, "The made hand is flush");
+  assertEquals(hand5.name, "Flush", "The made hand name is flush");
+  assertEquals(
+    hand5.nameJp,
+    "フラッシュ",
+    "The made hand name in Japanese is フラッシュ",
+  );
+
+  // 6. Full house
+  const cards6 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "A", suit: "d" },
+    { rank: "2", suit: "c" },
+    { rank: "2", suit: "s" },
+    { rank: "6", suit: "h" },
+    { rank: "7", suit: "d" },
+  ];
+  const fullHouse = new Evaluator(cards6);
+  const hand6 = fullHouse.evaluate();
+  assertEquals(hand6.rank, 6, "The made hand is full house");
+  assertEquals(hand6.name, "Full house", "The made hand name is full house");
+  assertEquals(
+    hand6.nameJp,
+    "フルハウス",
+    "The made hand name in Japanese is フルハウス",
+  );
+
+  // 7. Four of a kind
+  const cards7 = [
+    { rank: "A", suit: "s" },
+    { rank: "A", suit: "h" },
+    { rank: "A", suit: "d" },
+    { rank: "A", suit: "c" },
+    { rank: "2", suit: "s" },
+    { rank: "2", suit: "h" },
+    { rank: "2", suit: "d" },
+  ];
+  const fourOfAKind = new Evaluator(cards7);
+  const hand7 = fourOfAKind.evaluate();
+  assertEquals(hand7.rank, 7, "The made hand is four of a kind");
+  assertEquals(
+    hand7.name,
+    "Four of a kind",
+    "The made hand name is four of a kind",
+  );
+  assertEquals(
+    hand7.nameJp,
+    "フォーカード",
+    "The made hand name in Japanese is フォーカード",
+  );
+
+  // 8. Straight flush
+  const cards8 = [
+    { rank: "2", suit: "s" },
+    { rank: "3", suit: "s" },
+    { rank: "4", suit: "s" },
+    { rank: "5", suit: "s" },
+    { rank: "6", suit: "s" },
+    { rank: "Q", suit: "h" },
+    { rank: "K", suit: "d" },
+  ];
+  const straightFlush = new Evaluator(cards8);
+  const hand8 = straightFlush.evaluate();
+  assertEquals(hand8.rank, 8, "The made hand is straight flush");
+  assertEquals(
+    hand8.name,
+    "Straight flush",
+    "The made hand name is straight flush",
+  );
+  assertEquals(
+    hand8.nameJp,
+    "ストレートフラッシュ",
+    "The made hand name in Japanese is ストレートフラッシュ",
+  );
+
+  // 9. Royal flush
+  const cards9 = [
+    { rank: "T", suit: "s" },
+    { rank: "J", suit: "s" },
+    { rank: "Q", suit: "s" },
+    { rank: "K", suit: "s" },
+    { rank: "A", suit: "s" },
+    { rank: "2", suit: "h" },
+    { rank: "3", suit: "d" },
+  ];
+  const royalFlush = new Evaluator(cards9);
+  const hand9 = royalFlush.evaluate();
+  assertEquals(hand9.rank, 9, "The made hand is royal flush");
+  assertEquals(
+    hand9.name,
+    "Royal flush",
+    "The made hand name is royal flush",
+  );
+  assertEquals(
+    hand9.nameJp,
+    "ロイヤルフラッシュ",
+    "The made hand name in Japanese is ロイヤルフラッシュ",
   );
 });
