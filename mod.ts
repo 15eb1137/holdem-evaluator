@@ -1,7 +1,7 @@
 // Define rank interface
 interface Rank {
   symbol: string; // 'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'
-  value: number;  // Numeric value of the rank (14 for Ace high, 13 for King, etc.)
+  value: number; // Numeric value of the rank (14 for Ace high, 13 for King, etc.)
 }
 
 // Define card interface with Rank
@@ -10,93 +10,114 @@ interface Card {
   suit: string;
 }
 
+interface EvaluatedHand {
+  rank: number;
+  name: string;
+  nameJp: string;
+  usedCards: Card[];
+}
+
 export function getCardName(card: Card): string {
   return card.rank.symbol + card.suit;
 }
 
 // Define valid ranks and suits
-const VALID_RANKS: string[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
-const VALID_SUITS: string[] = ['s', 'h', 'd', 'c'];
+const VALID_RANKS: string[] = [
+  "A",
+  "K",
+  "Q",
+  "J",
+  "T",
+  "9",
+  "8",
+  "7",
+  "6",
+  "5",
+  "4",
+  "3",
+  "2",
+];
+const VALID_SUITS: string[] = ["s", "h", "d", "c"];
 
 // Define suit priorities (s > h > d > c)
 const SUIT_PRIORITIES: { [key: string]: number } = {
-  's': 3,
-  'h': 2,
-  'd': 1,
-  'c': 0
+  "s": 3,
+  "h": 2,
+  "d": 1,
+  "c": 0,
 };
 
 // Create Rank objects for all possible ranks
 const Ranks: { [key: string]: Rank } = {
-  'A': { symbol: 'A', value: 14 },
-  'K': { symbol: 'K', value: 13 },
-  'Q': { symbol: 'Q', value: 12 },
-  'J': { symbol: 'J', value: 11 },
-  'T': { symbol: 'T', value: 10 },
-  '9': { symbol: '9', value: 9 },
-  '8': { symbol: '8', value: 8 },
-  '7': { symbol: '7', value: 7 },
-  '6': { symbol: '6', value: 6 },
-  '5': { symbol: '5', value: 5 },
-  '4': { symbol: '4', value: 4 },
-  '3': { symbol: '3', value: 3 },
-  '2': { symbol: '2', value: 2 },
+  "A": { symbol: "A", value: 14 },
+  "K": { symbol: "K", value: 13 },
+  "Q": { symbol: "Q", value: 12 },
+  "J": { symbol: "J", value: 11 },
+  "T": { symbol: "T", value: 10 },
+  "9": { symbol: "9", value: 9 },
+  "8": { symbol: "8", value: 8 },
+  "7": { symbol: "7", value: 7 },
+  "6": { symbol: "6", value: 6 },
+  "5": { symbol: "5", value: 5 },
+  "4": { symbol: "4", value: 4 },
+  "3": { symbol: "3", value: 3 },
+  "2": { symbol: "2", value: 2 },
 };
 
 // Create Card objects for all possible ranks and suits
 export const Cards: { [key: string]: Card } = {
-  'As': { rank: Ranks['A'], suit: 's' },
-  'Ah': { rank: Ranks['A'], suit: 'h' },
-  'Ad': { rank: Ranks['A'], suit: 'd' },
-  'Ac': { rank: Ranks['A'], suit: 'c' },
-  'Ks': { rank: Ranks['K'], suit: 's' },
-  'Kh': { rank: Ranks['K'], suit: 'h' },
-  'Kd': { rank: Ranks['K'], suit: 'd' },
-  'Kc': { rank: Ranks['K'], suit: 'c' },
-  'Qs': { rank: Ranks['Q'], suit: 's' },
-  'Qh': { rank: Ranks['Q'], suit: 'h' },
-  'Qd': { rank: Ranks['Q'], suit: 'd' },
-  'Qc': { rank: Ranks['Q'], suit: 'c' },
-  'Js': { rank: Ranks['J'], suit: 's' },
-  'Jh': { rank: Ranks['J'], suit: 'h' },
-  'Jd': { rank: Ranks['J'], suit: 'd' },
-  'Jc': { rank: Ranks['J'], suit: 'c' },
-  'Ts': { rank: Ranks['T'], suit: 's' },
-  'Th': { rank: Ranks['T'], suit: 'h' },
-  'Td': { rank: Ranks['T'], suit: 'd' },
-  'Tc': { rank: Ranks['T'], suit: 'c' },
-  '9s': { rank: Ranks['9'], suit: 's' },
-  '9h': { rank: Ranks['9'], suit: 'h' },
-  '9d': { rank: Ranks['9'], suit: 'd' },
-  '9c': { rank: Ranks['9'], suit: 'c' },
-  '8s': { rank: Ranks['8'], suit: 's' },
-  '8h': { rank: Ranks['8'], suit: 'h' },
-  '8d': { rank: Ranks['8'], suit: 'd' },
-  '8c': { rank: Ranks['8'], suit: 'c' },
-  '7s': { rank: Ranks['7'], suit: 's' },
-  '7h': { rank: Ranks['7'], suit: 'h' },
-  '7d': { rank: Ranks['7'], suit: 'd' },
-  '7c': { rank: Ranks['7'], suit: 'c' },
-  '6s': { rank: Ranks['6'], suit: 's' },
-  '6h': { rank: Ranks['6'], suit: 'h' },
-  '6d': { rank: Ranks['6'], suit: 'd' },
-  '6c': { rank: Ranks['6'], suit: 'c' },
-  '5s': { rank: Ranks['5'], suit: 's' },
-  '5h': { rank: Ranks['5'], suit: 'h' },
-  '5d': { rank: Ranks['5'], suit: 'd' },
-  '5c': { rank: Ranks['5'], suit: 'c' },
-  '4s': { rank: Ranks['4'], suit: 's' },
-  '4h': { rank: Ranks['4'], suit: 'h' },
-  '4d': { rank: Ranks['4'], suit: 'd' },
-  '4c': { rank: Ranks['4'], suit: 'c' },
-  '3s': { rank: Ranks['3'], suit: 's' },
-  '3h': { rank: Ranks['3'], suit: 'h' },
-  '3d': { rank: Ranks['3'], suit: 'd' },
-  '3c': { rank: Ranks['3'], suit: 'c' },
-  '2s': { rank: Ranks['2'], suit: 's' },
-  '2h': { rank: Ranks['2'], suit: 'h' },
-  '2d': { rank: Ranks['2'], suit: 'd' },
-  '2c': { rank: Ranks['2'], suit: 'c' },
+  "As": { rank: Ranks["A"], suit: "s" },
+  "Ah": { rank: Ranks["A"], suit: "h" },
+  "Ad": { rank: Ranks["A"], suit: "d" },
+  "Ac": { rank: Ranks["A"], suit: "c" },
+  "Ks": { rank: Ranks["K"], suit: "s" },
+  "Kh": { rank: Ranks["K"], suit: "h" },
+  "Kd": { rank: Ranks["K"], suit: "d" },
+  "Kc": { rank: Ranks["K"], suit: "c" },
+  "Qs": { rank: Ranks["Q"], suit: "s" },
+  "Qh": { rank: Ranks["Q"], suit: "h" },
+  "Qd": { rank: Ranks["Q"], suit: "d" },
+  "Qc": { rank: Ranks["Q"], suit: "c" },
+  "Js": { rank: Ranks["J"], suit: "s" },
+  "Jh": { rank: Ranks["J"], suit: "h" },
+  "Jd": { rank: Ranks["J"], suit: "d" },
+  "Jc": { rank: Ranks["J"], suit: "c" },
+  "Ts": { rank: Ranks["T"], suit: "s" },
+  "Th": { rank: Ranks["T"], suit: "h" },
+  "Td": { rank: Ranks["T"], suit: "d" },
+  "Tc": { rank: Ranks["T"], suit: "c" },
+  "9s": { rank: Ranks["9"], suit: "s" },
+  "9h": { rank: Ranks["9"], suit: "h" },
+  "9d": { rank: Ranks["9"], suit: "d" },
+  "9c": { rank: Ranks["9"], suit: "c" },
+  "8s": { rank: Ranks["8"], suit: "s" },
+  "8h": { rank: Ranks["8"], suit: "h" },
+  "8d": { rank: Ranks["8"], suit: "d" },
+  "8c": { rank: Ranks["8"], suit: "c" },
+  "7s": { rank: Ranks["7"], suit: "s" },
+  "7h": { rank: Ranks["7"], suit: "h" },
+  "7d": { rank: Ranks["7"], suit: "d" },
+  "7c": { rank: Ranks["7"], suit: "c" },
+  "6s": { rank: Ranks["6"], suit: "s" },
+  "6h": { rank: Ranks["6"], suit: "h" },
+  "6d": { rank: Ranks["6"], suit: "d" },
+  "6c": { rank: Ranks["6"], suit: "c" },
+  "5s": { rank: Ranks["5"], suit: "s" },
+  "5h": { rank: Ranks["5"], suit: "h" },
+  "5d": { rank: Ranks["5"], suit: "d" },
+  "5c": { rank: Ranks["5"], suit: "c" },
+  "4s": { rank: Ranks["4"], suit: "s" },
+  "4h": { rank: Ranks["4"], suit: "h" },
+  "4d": { rank: Ranks["4"], suit: "d" },
+  "4c": { rank: Ranks["4"], suit: "c" },
+  "3s": { rank: Ranks["3"], suit: "s" },
+  "3h": { rank: Ranks["3"], suit: "h" },
+  "3d": { rank: Ranks["3"], suit: "d" },
+  "3c": { rank: Ranks["3"], suit: "c" },
+  "2s": { rank: Ranks["2"], suit: "s" },
+  "2h": { rank: Ranks["2"], suit: "h" },
+  "2d": { rank: Ranks["2"], suit: "d" },
+  "2c": { rank: Ranks["2"], suit: "c" },
 };
 
 // Evaluator class to evaluate poker hands
@@ -124,10 +145,18 @@ export class Evaluator {
     // Check for invalid suits
     for (const card of cards) {
       if (!VALID_SUITS.includes(card.suit)) {
-        throw new Error(`Invalid suit: ${card.suit}. Valid suits are: ${VALID_SUITS.join(', ')}`);
+        throw new Error(
+          `Invalid suit: ${card.suit}. Valid suits are: ${
+            VALID_SUITS.join(", ")
+          }`,
+        );
       }
       if (!VALID_RANKS.includes(card.rank.symbol)) {
-        throw new Error(`Invalid rank: ${card.rank.symbol}. Valid ranks are: ${VALID_RANKS.join(', ')}`);
+        throw new Error(
+          `Invalid rank: ${card.rank.symbol}. Valid ranks are: ${
+            VALID_RANKS.join(", ")
+          }`,
+        );
       }
     }
 
@@ -139,15 +168,17 @@ export class Evaluator {
         rankCounts[rankSymbol] = 0;
       }
       rankCounts[rankSymbol]++;
-      
+
       if (rankCounts[rankSymbol] >= 5) {
-        throw new Error(`Invalid hand: More than 4 cards of rank ${rankSymbol}`);
+        throw new Error(
+          `Invalid hand: More than 4 cards of rank ${rankSymbol}`,
+        );
       }
     }
   }
 
   // Method to evaluate the hand
-  public evaluate(): { rank: number; name: string; nameJp: string; usedCards: Card[] } {
+  public evaluate(): EvaluatedHand {
     // Reset usedCards
     this.usedCards = [];
 
@@ -172,25 +203,75 @@ export class Evaluator {
 
     // Return hand rank, name, and used cards
     if (this.royalFlush) {
-      return { rank: 9, name: "Royal flush", nameJp: "ロイヤルフラッシュ", usedCards: this.usedCards };
+      return {
+        rank: 9,
+        name: "Royal flush",
+        nameJp: "ロイヤルフラッシュ",
+        usedCards: this.usedCards,
+      };
     } else if (this.straightFlush) {
-      return { rank: 8, name: "Straight flush", nameJp: "ストレートフラッシュ", usedCards: this.usedCards };
+      return {
+        rank: 8,
+        name: "Straight flush",
+        nameJp: "ストレートフラッシュ",
+        usedCards: this.usedCards,
+      };
     } else if (this.fourOfAKind) {
-      return { rank: 7, name: "Four of a kind", nameJp: "フォーカード", usedCards: this.usedCards };
+      return {
+        rank: 7,
+        name: "Four of a kind",
+        nameJp: "フォーカード",
+        usedCards: this.usedCards,
+      };
     } else if (this.fullHouse) {
-      return { rank: 6, name: "Full house", nameJp: "フルハウス", usedCards: this.usedCards };
+      return {
+        rank: 6,
+        name: "Full house",
+        nameJp: "フルハウス",
+        usedCards: this.usedCards,
+      };
     } else if (this.flush) {
-      return { rank: 5, name: "Flush", nameJp: "フラッシュ", usedCards: this.usedCards };
+      return {
+        rank: 5,
+        name: "Flush",
+        nameJp: "フラッシュ",
+        usedCards: this.usedCards,
+      };
     } else if (this.straight) {
-      return { rank: 4, name: "Straight", nameJp: "ストレート", usedCards: this.usedCards };
+      return {
+        rank: 4,
+        name: "Straight",
+        nameJp: "ストレート",
+        usedCards: this.usedCards,
+      };
     } else if (this.threeOfAKind) {
-      return { rank: 3, name: "Three of a kind", nameJp: "スリーカード", usedCards: this.usedCards };
+      return {
+        rank: 3,
+        name: "Three of a kind",
+        nameJp: "スリーカード",
+        usedCards: this.usedCards,
+      };
     } else if (this.twoPairs) {
-      return { rank: 2, name: "Two pairs", nameJp: "ツーペア", usedCards: this.usedCards };
+      return {
+        rank: 2,
+        name: "Two pairs",
+        nameJp: "ツーペア",
+        usedCards: this.usedCards,
+      };
     } else if (this.pair) {
-      return { rank: 1, name: "Pair", nameJp: "ワンペア", usedCards: this.usedCards };
+      return {
+        rank: 1,
+        name: "Pair",
+        nameJp: "ワンペア",
+        usedCards: this.usedCards,
+      };
     } else {
-      return { rank: 0, name: "High card", nameJp: "ハイカード", usedCards: this.usedCards };
+      return {
+        rank: 0,
+        name: "High card",
+        nameJp: "ハイカード",
+        usedCards: this.usedCards,
+      };
     }
   }
 
@@ -255,7 +336,7 @@ export class Evaluator {
       if (cards.length >= 5) {
         // Sort cards by rank value (high to low)
         const sortedCards = this.sortCards(cards);
-        
+
         // Remove duplicates while preserving order
         const uniqueRanks: number[] = [];
         const uniqueRankCards: Card[] = [];
@@ -276,16 +357,16 @@ export class Evaluator {
         ) {
           this.royalFlush = true;
           this.straightFlush = true; // Royal flush is also a straight flush
-          
+
           // Set used cards for royal flush (A, K, Q, J, T of the same suit)
-          this.usedCards = sortedCards.filter(card => 
+          this.usedCards = sortedCards.filter((card) =>
             card.rank.value === 14 || // Ace
             card.rank.value === 13 || // King
             card.rank.value === 12 || // Queen
             card.rank.value === 11 || // Jack
-            card.rank.value === 10    // Ten
+            card.rank.value === 10 // Ten
           );
-          
+
           return;
         }
 
@@ -299,10 +380,10 @@ export class Evaluator {
             uniqueRanks[i + 3] - uniqueRanks[i + 4] === 1
           ) {
             this.straightFlush = true;
-            
+
             // Set used cards for straight flush (5 consecutive cards of the same suit)
             this.usedCards = uniqueRankCards.slice(i, i + 5);
-            
+
             return;
           }
         }
@@ -316,17 +397,17 @@ export class Evaluator {
           uniqueRanks.includes(14) // Ace
         ) {
           this.straightFlush = true;
-          
+
           // Find the cards for 5-4-3-2-A straight flush
           const aceLowStraightFlush = [];
           for (const value of [5, 4, 3, 2, 14]) { // Order matters for display
-            const card = sortedCards.find(c => c.rank.value === value);
+            const card = sortedCards.find((c) => c.rank.value === value);
             if (card) aceLowStraightFlush.push(card);
           }
-          
+
           // Set used cards for Ace-low straight flush
           this.usedCards = aceLowStraightFlush;
-          
+
           return;
         }
       }
@@ -337,7 +418,7 @@ export class Evaluator {
   private evaluateFourOfAKind(): void {
     // Skip if we already found a higher hand
     if (this.royalFlush || this.straightFlush) return;
-    
+
     const rankCounts = this.countRanks();
     let fourOfAKindRank: string | null = null;
 
@@ -352,12 +433,16 @@ export class Evaluator {
 
     if (this.fourOfAKind && fourOfAKindRank) {
       // Get the four cards of the same rank, sorted by suit priority
-      const fourOfAKindCards = this.sortCards(this.cards.filter(card => card.rank.symbol === fourOfAKindRank));
-      
+      const fourOfAKindCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === fourOfAKindRank),
+      );
+
       // Get the highest card that is not part of the four of a kind
       const excludeRanks = [fourOfAKindRank];
-      const highCard = this.sortCards(this.cards.filter(card => !excludeRanks.includes(card.rank.symbol)))[0];
-      
+      const highCard = this.sortCards(this.cards.filter((card) =>
+        !excludeRanks.includes(card.rank.symbol)
+      ))[0];
+
       // Set used cards (four of a kind + highest kicker)
       this.usedCards = [...fourOfAKindCards, highCard];
     }
@@ -367,7 +452,7 @@ export class Evaluator {
   private evaluateFullHouse(): void {
     // Skip if we already found a higher hand
     if (this.royalFlush || this.straightFlush || this.fourOfAKind) return;
-    
+
     const rankCounts = this.countRanks();
     let threeOfAKindRank: string | null = null;
     let pairRank: string | null = null;
@@ -375,7 +460,10 @@ export class Evaluator {
     // Find the highest three of a kind
     for (const rankSymbol in rankCounts) {
       if (rankCounts[rankSymbol] === 3) {
-        if (!threeOfAKindRank || Ranks[rankSymbol].value > Ranks[threeOfAKindRank].value) {
+        if (
+          !threeOfAKindRank ||
+          Ranks[rankSymbol].value > Ranks[threeOfAKindRank].value
+        ) {
           threeOfAKindRank = rankSymbol;
         }
       }
@@ -383,8 +471,14 @@ export class Evaluator {
 
     // Find the highest pair
     for (const rankSymbol in rankCounts) {
-      if (rankCounts[rankSymbol] === 2 || (rankCounts[rankSymbol] === 3 && rankSymbol !== threeOfAKindRank)) {
-        if (rankSymbol !== threeOfAKindRank && (!pairRank || Ranks[rankSymbol].value > Ranks[pairRank].value)) {
+      if (
+        rankCounts[rankSymbol] === 2 ||
+        (rankCounts[rankSymbol] === 3 && rankSymbol !== threeOfAKindRank)
+      ) {
+        if (
+          rankSymbol !== threeOfAKindRank &&
+          (!pairRank || Ranks[rankSymbol].value > Ranks[pairRank].value)
+        ) {
           pairRank = rankSymbol;
         }
       }
@@ -393,13 +487,17 @@ export class Evaluator {
     // If both three of a kind and pair are found, set fullHouse to true
     if (threeOfAKindRank && pairRank) {
       this.fullHouse = true;
-      
+
       // Get three of a kind cards sorted by suit priority
-      const threeCards = this.sortCards(this.cards.filter(card => card.rank.symbol === threeOfAKindRank)).slice(0, 3);
-      
+      const threeCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === threeOfAKindRank),
+      ).slice(0, 3);
+
       // Get pair cards sorted by suit priority
-      const pairCards = this.sortCards(this.cards.filter(card => card.rank.symbol === pairRank)).slice(0, 2);
-      
+      const pairCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === pairRank),
+      ).slice(0, 2);
+
       // Set used cards (three of a kind + pair)
       this.usedCards = [...threeCards, ...pairCards];
     }
@@ -408,8 +506,11 @@ export class Evaluator {
   // Check if the hand contains five or more cards of the same suit (flush)
   private evaluateFlush(): void {
     // Skip if we already found a higher hand
-    if (this.royalFlush || this.straightFlush || this.fourOfAKind || this.fullHouse) return;
-    
+    if (
+      this.royalFlush || this.straightFlush || this.fourOfAKind ||
+      this.fullHouse
+    ) return;
+
     const suitCounts = this.countSuits();
     let flushSuit: string | null = null;
 
@@ -424,11 +525,11 @@ export class Evaluator {
 
     if (this.flush && flushSuit) {
       // Get all cards of the flush suit
-      const flushCards = this.cards.filter(card => card.suit === flushSuit);
-      
+      const flushCards = this.cards.filter((card) => card.suit === flushSuit);
+
       // Sort by rank (high to low)
       const sortedFlushCards = this.sortCards(flushCards);
-      
+
       // Take top 5 cards
       this.usedCards = sortedFlushCards.slice(0, 5);
     }
@@ -437,22 +538,25 @@ export class Evaluator {
   // Check if the hand contains five consecutive cards (straight)
   private evaluateStraight(): void {
     // Skip if we already found a higher hand
-    if (this.royalFlush || this.straightFlush || this.fourOfAKind || this.fullHouse || this.flush) return;
-    
+    if (
+      this.royalFlush || this.straightFlush || this.fourOfAKind ||
+      this.fullHouse || this.flush
+    ) return;
+
     // Sort cards by rank (high to low) and suit priority
     const sortedCards = this.sortCards(this.cards);
-    
+
     // Remove duplicates while preserving order for ranks
     const uniqueRanks: number[] = [];
     const uniqueRankCardsMap: Map<number, Card> = new Map();
-    
+
     for (const card of sortedCards) {
       if (!uniqueRanks.includes(card.rank.value)) {
         uniqueRanks.push(card.rank.value);
         uniqueRankCardsMap.set(card.rank.value, card);
       }
     }
-    
+
     // Sort ranks in descending order
     uniqueRanks.sort((a, b) => b - a);
 
@@ -466,17 +570,17 @@ export class Evaluator {
         uniqueRanks[i + 3] - uniqueRanks[i + 4] === 1
       ) {
         this.straight = true;
-        
+
         // Get the cards for the straight
         const straightCards: Card[] = [];
         for (let j = i; j < i + 5; j++) {
           const card = uniqueRankCardsMap.get(uniqueRanks[j]);
           if (card) straightCards.push(card);
         }
-        
+
         // Set used cards (5 consecutive cards)
         this.usedCards = straightCards;
-        
+
         return;
       }
     }
@@ -490,14 +594,14 @@ export class Evaluator {
       uniqueRanks.includes(14) // Ace
     ) {
       this.straight = true;
-      
+
       // Get the cards for 5-4-3-2-A straight in correct order
       const straightCards: Card[] = [];
       for (const value of [5, 4, 3, 2, 14]) { // Order matters for display
         const card = uniqueRankCardsMap.get(value);
         if (card) straightCards.push(card);
       }
-      
+
       // Set used cards for Ace-low straight
       this.usedCards = straightCards;
     }
@@ -506,8 +610,11 @@ export class Evaluator {
   // Check if the hand contains exactly three of a kind of the same rank
   private evaluateThreeOfAKind(): void {
     // Skip if we already found a higher hand
-    if (this.royalFlush || this.straightFlush || this.fourOfAKind || this.fullHouse || this.flush || this.straight) return;
-    
+    if (
+      this.royalFlush || this.straightFlush || this.fourOfAKind ||
+      this.fullHouse || this.flush || this.straight
+    ) return;
+
     const rankCounts = this.countRanks();
     let threeOfAKindRank: string | null = null;
 
@@ -522,12 +629,16 @@ export class Evaluator {
 
     if (this.threeOfAKind && threeOfAKindRank) {
       // Get the three cards of the same rank, sorted by suit priority
-      const threeOfAKindCards = this.sortCards(this.cards.filter(card => card.rank.symbol === threeOfAKindRank));
-      
+      const threeOfAKindCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === threeOfAKindRank),
+      );
+
       // Get the two highest cards that are not part of the three of a kind
       const excludeRanks = [threeOfAKindRank];
-      const highCards = this.sortCards(this.cards.filter(card => !excludeRanks.includes(card.rank.symbol))).slice(0, 2);
-      
+      const highCards = this.sortCards(
+        this.cards.filter((card) => !excludeRanks.includes(card.rank.symbol)),
+      ).slice(0, 2);
+
       // Set used cards (three of a kind + two highest kickers)
       this.usedCards = [...threeOfAKindCards, ...highCards];
     }
@@ -536,8 +647,11 @@ export class Evaluator {
   // Check if the hand contains exactly two pairs
   private evaluateTwoPairs(): void {
     // Skip if we already found a higher hand
-    if (this.royalFlush || this.straightFlush || this.fourOfAKind || this.fullHouse || this.flush || this.straight || this.threeOfAKind) return;
-    
+    if (
+      this.royalFlush || this.straightFlush || this.fourOfAKind ||
+      this.fullHouse || this.flush || this.straight || this.threeOfAKind
+    ) return;
+
     const rankCounts = this.countRanks();
     const pairRanks: string[] = [];
 
@@ -551,23 +665,29 @@ export class Evaluator {
     // If exactly two pairs are found, set twoPairs to true
     if (pairRanks.length >= 2) {
       this.twoPairs = true;
-      
+
       // Sort pairs by rank (high to low)
       pairRanks.sort((a, b) => Ranks[b].value - Ranks[a].value);
-      
+
       // Get top two pairs
       const topTwoPairRanks = pairRanks.slice(0, 2);
-      
+
       // Get cards from first pair sorted by suit priority
-      const firstPairCards = this.sortCards(this.cards.filter(card => card.rank.symbol === topTwoPairRanks[0]))
-      
+      const firstPairCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === topTwoPairRanks[0]),
+      );
+
       // Get cards from second pair sorted by suit priority
-      const secondPairCards = this.sortCards(this.cards.filter(card => card.rank.symbol === topTwoPairRanks[1]))
-      
+      const secondPairCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === topTwoPairRanks[1]),
+      );
+
       // Get the highest card that is not part of the pairs
       const excludeRanks = [...topTwoPairRanks];
-      const highCard = this.sortCards(this.cards.filter(card => !excludeRanks.includes(card.rank.symbol)))[0];
-      
+      const highCard = this.sortCards(this.cards.filter((card) =>
+        !excludeRanks.includes(card.rank.symbol)
+      ))[0];
+
       // Set used cards (highest pair + second pair + highest kicker)
       this.usedCards = [...firstPairCards, ...secondPairCards, highCard];
     }
@@ -576,8 +696,12 @@ export class Evaluator {
   // Check if the hand contains exactly a pair
   private evaluatePair(): void {
     // Skip if we already found a higher hand
-    if (this.royalFlush || this.straightFlush || this.fourOfAKind || this.fullHouse || this.flush || this.straight || this.threeOfAKind || this.twoPairs) return;
-    
+    if (
+      this.royalFlush || this.straightFlush || this.fourOfAKind ||
+      this.fullHouse || this.flush || this.straight || this.threeOfAKind ||
+      this.twoPairs
+    ) return;
+
     const rankCounts = this.countRanks();
     let pairRank: string | null = null;
 
@@ -593,14 +717,18 @@ export class Evaluator {
     // If a pair is found, set pair to true
     if (pairRank) {
       this.pair = true;
-      
+
       // Get the pair cards sorted by suit priority
-      const pairCards = this.sortCards(this.cards.filter(card => card.rank.symbol === pairRank));
-      
+      const pairCards = this.sortCards(
+        this.cards.filter((card) => card.rank.symbol === pairRank),
+      );
+
       // Get the three highest cards that are not part of the pair
       const excludeRanks = [pairRank];
-      const highCards = this.sortCards(this.cards.filter(card => !excludeRanks.includes(card.rank.symbol))).slice(0, 3);
-      
+      const highCards = this.sortCards(
+        this.cards.filter((card) => !excludeRanks.includes(card.rank.symbol)),
+      ).slice(0, 3);
+
       // Set used cards (pair + three highest kickers)
       this.usedCards = [...pairCards, ...highCards];
     }
@@ -609,11 +737,15 @@ export class Evaluator {
   // Evaluate high card (when no other hand is found)
   private evaluateHighCard(): void {
     // Skip if we already found a higher hand
-    if (this.royalFlush || this.straightFlush || this.fourOfAKind || this.fullHouse || this.flush || this.straight || this.threeOfAKind || this.twoPairs || this.pair) return;
-    
+    if (
+      this.royalFlush || this.straightFlush || this.fourOfAKind ||
+      this.fullHouse || this.flush || this.straight || this.threeOfAKind ||
+      this.twoPairs || this.pair
+    ) return;
+
     // Sort cards by rank (high to low) and suit priority
     const sortedCards = this.sortCards(this.cards);
-    
+
     // Take top 5 cards
     this.usedCards = sortedCards.slice(0, 5);
   }
