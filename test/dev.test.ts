@@ -1,16 +1,16 @@
 import { assert, assertEquals } from "@std/assert";
-import { Evaluator } from "../mod.ts";
+import { Cards, Evaluator } from "../mod.ts";
 
 Deno.test("Royal flush condition", () => {
   // Test case for royal flush condition
   const cards1 = [
-    { rank: "T", suit: "s" },
-    { rank: "J", suit: "s" },
-    { rank: "Q", suit: "s" },
-    { rank: "K", suit: "s" },
-    { rank: "A", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "3", suit: "d" },
+    Cards["Ts"],
+    Cards["Js"],
+    Cards["Qs"],
+    Cards["Ks"],
+    Cards["As"],
+    Cards["2h"],
+    Cards["3d"],
   ];
   const royalFlush = new Evaluator(cards1);
   royalFlush.evaluate();
@@ -21,13 +21,13 @@ Deno.test("Royal flush condition", () => {
 
   // Test case for no royal flush condition
   const cards2 = [
-    { rank: "K", suit: "s" },
-    { rank: "Q", suit: "s" },
-    { rank: "J", suit: "s" },
-    { rank: "T", suit: "s" },
-    { rank: "9", suit: "s" },
-    { rank: "2", suit: "d" },
-    { rank: "3", suit: "d" },
+    Cards["Ks"],
+    Cards["Qs"],
+    Cards["Js"],
+    Cards["Ts"],
+    Cards["9s"],
+    Cards["2d"],
+    Cards["3d"],
   ];
   const noRoyalFlush = new Evaluator(cards2);
   noRoyalFlush.evaluate();
@@ -40,13 +40,13 @@ Deno.test("Royal flush condition", () => {
 Deno.test("Straight flush condition", () => {
   // Test case for straight flush condition
   const cards1 = [
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "5", suit: "s" },
-    { rank: "6", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["2s"],
+    Cards["3s"],
+    Cards["4s"],
+    Cards["5s"],
+    Cards["6s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straightFlush = new Evaluator(cards1);
   straightFlush.evaluate();
@@ -57,13 +57,13 @@ Deno.test("Straight flush condition", () => {
 
   // Test case for no straight flush condition
   const cards2 = [
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "5", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "Q", suit: "d" },
-    { rank: "K", suit: "d" },
+    Cards["2s"],
+    Cards["3s"],
+    Cards["4s"],
+    Cards["5s"],
+    Cards["6h"],
+    Cards["Qd"],
+    Cards["Kd"],
   ];
   const noStraightFlush = new Evaluator(cards2);
   noStraightFlush.evaluate();
@@ -74,13 +74,13 @@ Deno.test("Straight flush condition", () => {
 
   // Test case for straight flush with Ace low
   const cards3 = [
-    { rank: "A", suit: "s" },
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "5", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["As"],
+    Cards["2s"],
+    Cards["3s"],
+    Cards["4s"],
+    Cards["5s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straightFlushWithAceLow = new Evaluator(cards3);
   straightFlushWithAceLow.evaluate();
@@ -93,13 +93,13 @@ Deno.test("Straight flush condition", () => {
 Deno.test("Four of a kind condition", () => {
   // Test case for four of a kind condition
   const cards1 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "A", suit: "c" },
-    { rank: "2", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "2", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["Ac"],
+    Cards["2s"],
+    Cards["2h"],
+    Cards["2d"],
   ];
   const fourOfAKind = new Evaluator(cards1);
   fourOfAKind.evaluate();
@@ -110,13 +110,13 @@ Deno.test("Four of a kind condition", () => {
 
   // Test case for no four of a kind condition
   const cards2 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "2", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "3", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2c"],
+    Cards["2s"],
+    Cards["2h"],
+    Cards["3d"],
   ];
   const noFourOfAKind = new Evaluator(cards2);
   noFourOfAKind.evaluate();
@@ -129,13 +129,13 @@ Deno.test("Four of a kind condition", () => {
 Deno.test("Full house condition", () => {
   // Test case for full house condition
   const cards1 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "2", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "7", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2c"],
+    Cards["2s"],
+    Cards["6h"],
+    Cards["7d"],
   ];
   const fullHouse = new Evaluator(cards1);
   fullHouse.evaluate();
@@ -146,13 +146,13 @@ Deno.test("Full house condition", () => {
 
   // Test case for no full house condition
   const cards2 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "3", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "7", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2c"],
+    Cards["3s"],
+    Cards["6h"],
+    Cards["7d"],
   ];
   const noFullHouse = new Evaluator(cards2);
   noFullHouse.evaluate();
@@ -165,13 +165,13 @@ Deno.test("Full house condition", () => {
 Deno.test("Flush condition", () => {
   // Test case for flush condition
   const cards1 = [
-    { rank: "2", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "6", suit: "s" },
-    { rank: "8", suit: "s" },
-    { rank: "T", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "A", suit: "d" },
+    Cards["2s"],
+    Cards["4s"],
+    Cards["6s"],
+    Cards["8s"],
+    Cards["Ts"],
+    Cards["Qh"],
+    Cards["Ad"],
   ];
   const flush = new Evaluator(cards1);
   flush.evaluate();
@@ -179,13 +179,13 @@ Deno.test("Flush condition", () => {
 
   // Test case for no flush condition
   const cards2 = [
-    { rank: "2", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "6", suit: "s" },
-    { rank: "8", suit: "s" },
-    { rank: "T", suit: "h" },
-    { rank: "Q", suit: "d" },
-    { rank: "A", suit: "c" },
+    Cards["2s"],
+    Cards["4s"],
+    Cards["6s"],
+    Cards["8s"],
+    Cards["Th"],
+    Cards["Qd"],
+    Cards["Ac"],
   ];
   const noFlush = new Evaluator(cards2);
   noFlush.evaluate();
@@ -198,13 +198,13 @@ Deno.test("Flush condition", () => {
 Deno.test("Straight condition", () => {
   // Test case for straight condition
   const cards1 = [
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "h" },
-    { rank: "4", suit: "d" },
-    { rank: "5", suit: "c" },
-    { rank: "6", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["2s"],
+    Cards["3h"],
+    Cards["4d"],
+    Cards["5c"],
+    Cards["6s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straight = new Evaluator(cards1);
   straight.evaluate();
@@ -212,13 +212,13 @@ Deno.test("Straight condition", () => {
 
   // Test case for no straight condition
   const cards2 = [
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "h" },
-    { rank: "4", suit: "d" },
-    { rank: "5", suit: "c" },
-    { rank: "K", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "J", suit: "d" },
+    Cards["2s"],
+    Cards["3h"],
+    Cards["4d"],
+    Cards["5c"],
+    Cards["Ks"],
+    Cards["Qh"],
+    Cards["Jd"],
   ];
   const noStraight = new Evaluator(cards2);
   noStraight.evaluate();
@@ -229,13 +229,13 @@ Deno.test("Straight condition", () => {
 
   // Test case for straight with Ace low
   const cards3 = [
-    { rank: "A", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "3", suit: "d" },
-    { rank: "4", suit: "c" },
-    { rank: "5", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["As"],
+    Cards["2h"],
+    Cards["3d"],
+    Cards["4c"],
+    Cards["5s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straightWithAceLow = new Evaluator(cards3);
   straightWithAceLow.evaluate();
@@ -248,13 +248,13 @@ Deno.test("Straight condition", () => {
 Deno.test("Three of a kind condition", () => {
   // Test case for three of a kind condition
   const cards1 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "h" },
-    { rank: "3", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2c"],
+    Cards["2s"],
+    Cards["3h"],
+    Cards["3d"],
   ];
   const threeOfAKind = new Evaluator(cards1);
   threeOfAKind.evaluate();
@@ -265,13 +265,13 @@ Deno.test("Three of a kind condition", () => {
 
   // Test case for no three of a kind condition
   const cards2 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "2", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "3", suit: "s" },
-    { rank: "3", suit: "h" },
-    { rank: "4", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["2c"],
+    Cards["3s"],
+    Cards["3h"],
+    Cards["4d"],
   ];
   const noThreeOfAKind = new Evaluator(cards2);
   noThreeOfAKind.evaluate();
@@ -284,13 +284,13 @@ Deno.test("Three of a kind condition", () => {
 Deno.test("Two pairs condition", () => {
   // Test case for two pairs condition
   const cards1 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "2", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "h" },
-    { rank: "6", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["2c"],
+    Cards["3s"],
+    Cards["4h"],
+    Cards["6d"],
   ];
   const twoPairs = new Evaluator(cards1);
   twoPairs.evaluate();
@@ -301,13 +301,13 @@ Deno.test("Two pairs condition", () => {
 
   // Test case for no two pairs condition
   const cards2 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "2", suit: "d" },
-    { rank: "3", suit: "c" },
-    { rank: "4", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "7", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["3c"],
+    Cards["4s"],
+    Cards["6h"],
+    Cards["7d"],
   ];
   const noTwoPairs = new Evaluator(cards2);
   noTwoPairs.evaluate();
@@ -320,13 +320,13 @@ Deno.test("Two pairs condition", () => {
 Deno.test("Pair condition", () => {
   // Test case for a pair condition
   const cards1 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "2", suit: "d" },
-    { rank: "3", suit: "c" },
-    { rank: "4", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "7", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["3c"],
+    Cards["4s"],
+    Cards["6h"],
+    Cards["7d"],
   ];
   const pair = new Evaluator(cards1);
   pair.evaluate();
@@ -334,13 +334,13 @@ Deno.test("Pair condition", () => {
 
   // Test case for no pair condition
   const cards2 = [
-    { rank: "A", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "3", suit: "d" },
-    { rank: "4", suit: "c" },
-    { rank: "6", suit: "s" },
-    { rank: "7", suit: "h" },
-    { rank: "8", suit: "d" },
+    Cards["As"],
+    Cards["2h"],
+    Cards["3d"],
+    Cards["4c"],
+    Cards["6s"],
+    Cards["7h"],
+    Cards["8d"],
   ];
   const noPair = new Evaluator(cards2);
   noPair.evaluate();
@@ -353,13 +353,13 @@ Deno.test("Pair condition", () => {
 Deno.test("Evaluate hand", () => {
   // 0. High card
   const cards0 = [
-    { rank: "2", suit: "s" },
-    { rank: "4", suit: "h" },
-    { rank: "6", suit: "d" },
-    { rank: "8", suit: "c" },
-    { rank: "T", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "A", suit: "d" },
+    Cards["2s"],
+    Cards["4h"],
+    Cards["6d"],
+    Cards["8c"],
+    Cards["Ts"],
+    Cards["Qh"],
+    Cards["Ad"],
   ];
   const highCard = new Evaluator(cards0);
   const hand0 = highCard.evaluate();
@@ -373,13 +373,13 @@ Deno.test("Evaluate hand", () => {
 
   // 1. Pair
   const cards1 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "2", suit: "d" },
-    { rank: "3", suit: "c" },
-    { rank: "4", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "7", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["3c"],
+    Cards["4s"],
+    Cards["6h"],
+    Cards["7d"],
   ];
   const pair = new Evaluator(cards1);
   const hand1 = pair.evaluate();
@@ -393,13 +393,13 @@ Deno.test("Evaluate hand", () => {
 
   // 2. Two pairs
   const cards2 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "2", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "h" },
-    { rank: "6", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["2c"],
+    Cards["3s"],
+    Cards["4h"],
+    Cards["6d"],
   ];
   const twoPair = new Evaluator(cards2);
   const hand2 = twoPair.evaluate();
@@ -413,13 +413,13 @@ Deno.test("Evaluate hand", () => {
 
   // 3. Three of a kind
   const cards3 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "h" },
-    { rank: "6", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2c"],
+    Cards["3s"],
+    Cards["4h"],
+    Cards["6d"],
   ];
   const threeOfAKind = new Evaluator(cards3);
   const hand3 = threeOfAKind.evaluate();
@@ -437,13 +437,13 @@ Deno.test("Evaluate hand", () => {
 
   // 4-1. Straight
   const cards41 = [
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "h" },
-    { rank: "4", suit: "d" },
-    { rank: "5", suit: "c" },
-    { rank: "6", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["2s"],
+    Cards["3h"],
+    Cards["4d"],
+    Cards["5c"],
+    Cards["6s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straight = new Evaluator(cards41);
   const hand41 = straight.evaluate();
@@ -457,13 +457,13 @@ Deno.test("Evaluate hand", () => {
 
   // 4-2. Straight with Ace low
   const cards42 = [
-    { rank: "A", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "3", suit: "d" },
-    { rank: "4", suit: "c" },
-    { rank: "5", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["As"],
+    Cards["2h"],
+    Cards["3d"],
+    Cards["4c"],
+    Cards["5s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straightWithAceLow = new Evaluator(cards42);
   const hand42 = straightWithAceLow.evaluate();
@@ -481,13 +481,13 @@ Deno.test("Evaluate hand", () => {
 
   // 5. Flush
   const cards5 = [
-    { rank: "2", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "6", suit: "s" },
-    { rank: "8", suit: "s" },
-    { rank: "T", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "A", suit: "d" },
+    Cards["2s"],
+    Cards["4s"],
+    Cards["6s"],
+    Cards["8s"],
+    Cards["Ts"],
+    Cards["Qh"],
+    Cards["Ad"],
   ];
   const flush = new Evaluator(cards5);
   const hand5 = flush.evaluate();
@@ -501,13 +501,13 @@ Deno.test("Evaluate hand", () => {
 
   // 6. Full house
   const cards6 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "2", suit: "c" },
-    { rank: "2", suit: "s" },
-    { rank: "6", suit: "h" },
-    { rank: "7", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2c"],
+    Cards["2s"],
+    Cards["6h"],
+    Cards["7d"],
   ];
   const fullHouse = new Evaluator(cards6);
   const hand6 = fullHouse.evaluate();
@@ -521,13 +521,13 @@ Deno.test("Evaluate hand", () => {
 
   // 7. Four of a kind
   const cards7 = [
-    { rank: "A", suit: "s" },
-    { rank: "A", suit: "h" },
-    { rank: "A", suit: "d" },
-    { rank: "A", suit: "c" },
-    { rank: "2", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "2", suit: "d" },
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["Ac"],
+    Cards["2s"],
+    Cards["2h"],
+    Cards["2d"],
   ];
   const fourOfAKind = new Evaluator(cards7);
   const hand7 = fourOfAKind.evaluate();
@@ -545,13 +545,13 @@ Deno.test("Evaluate hand", () => {
 
   // 8. Straight flush
   const cards8 = [
-    { rank: "2", suit: "s" },
-    { rank: "3", suit: "s" },
-    { rank: "4", suit: "s" },
-    { rank: "5", suit: "s" },
-    { rank: "6", suit: "s" },
-    { rank: "Q", suit: "h" },
-    { rank: "K", suit: "d" },
+    Cards["2s"],
+    Cards["3s"],
+    Cards["4s"],
+    Cards["5s"],
+    Cards["6s"],
+    Cards["Qh"],
+    Cards["Kd"],
   ];
   const straightFlush = new Evaluator(cards8);
   const hand8 = straightFlush.evaluate();
@@ -569,13 +569,13 @@ Deno.test("Evaluate hand", () => {
 
   // 9. Royal flush
   const cards9 = [
-    { rank: "T", suit: "s" },
-    { rank: "J", suit: "s" },
-    { rank: "Q", suit: "s" },
-    { rank: "K", suit: "s" },
-    { rank: "A", suit: "s" },
-    { rank: "2", suit: "h" },
-    { rank: "3", suit: "d" },
+    Cards["Ts"],
+    Cards["Js"],
+    Cards["Qs"],
+    Cards["Ks"],
+    Cards["As"],
+    Cards["2h"],
+    Cards["3d"],
   ];
   const royalFlush = new Evaluator(cards9);
   const hand9 = royalFlush.evaluate();
