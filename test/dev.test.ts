@@ -18,6 +18,7 @@ Deno.test("Royal flush condition", () => {
     royalFlush.royalFlush,
     "The made hand meets the royal flush condition",
   );
+
   // Test case for no royal flush condition
   const cards2 = [
     { rank: "K", suit: "s" },
@@ -100,7 +101,6 @@ Deno.test("Four of a kind condition", () => {
     { rank: "2", suit: "h" },
     { rank: "2", suit: "d" },
   ];
-
   const fourOfAKind = new Evaluator(cards1);
   fourOfAKind.evaluate();
   assert(
@@ -173,7 +173,6 @@ Deno.test("Flush condition", () => {
     { rank: "Q", suit: "h" },
     { rank: "A", suit: "d" },
   ];
-
   const flush = new Evaluator(cards1);
   flush.evaluate();
   assert(flush.flush, "The made hand meets the flush condition");
@@ -207,7 +206,6 @@ Deno.test("Straight condition", () => {
     { rank: "Q", suit: "h" },
     { rank: "K", suit: "d" },
   ];
-
   const straight = new Evaluator(cards1);
   straight.evaluate();
   assert(straight.straight, "The made hand meets the straight condition");
@@ -258,7 +256,6 @@ Deno.test("Three of a kind condition", () => {
     { rank: "3", suit: "h" },
     { rank: "3", suit: "d" },
   ];
-
   const threeOfAKind = new Evaluator(cards1);
   threeOfAKind.evaluate();
   assert(
@@ -295,7 +292,6 @@ Deno.test("Two pairs condition", () => {
     { rank: "4", suit: "h" },
     { rank: "6", suit: "d" },
   ];
-
   const twoPairs = new Evaluator(cards1);
   twoPairs.evaluate();
   assert(
@@ -332,7 +328,6 @@ Deno.test("Pair condition", () => {
     { rank: "6", suit: "h" },
     { rank: "7", suit: "d" },
   ];
-
   const pair = new Evaluator(cards1);
   pair.evaluate();
   assert(pair.pair, "The made hand meets the pair condition");

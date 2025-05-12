@@ -25,10 +25,10 @@ export class Evaluator {
   evaluate(): { rank: number; name: string; nameJp: string } {
     // Check for straight flush condition (includes royal flush)
     this.evaluateStraightFlush();
-    // Check for full house condition
-    this.evaluateFullHouse();
     // Check for four of a kind condition
     this.evaluateFourOfAKind();
+    // Check for full house condition
+    this.evaluateFullHouse();
     // Check for flush condition
     this.evaluateFlush();
     // Check for straight condition
@@ -78,19 +78,6 @@ export class Evaluator {
     return rankCounts;
   }
 
-  // Check if the hand contains four of a kind of the same rank
-  private evaluateFourOfAKind(): void {
-    const rankCounts = this.countRanks();
-
-    // Check if any rank appears exactly 4 times
-    for (const rank in rankCounts) {
-      if (rankCounts[rank] === 4) {
-        this.fourOfAKind = true;
-        return;
-      }
-    }
-  }
-
   // Helper method to count occurrences of each suit
   private countSuits(): { [suit: string]: number } {
     const suitCounts: { [suit: string]: number } = {};
@@ -103,19 +90,6 @@ export class Evaluator {
     }
 
     return suitCounts;
-  }
-
-  // Check if the hand contains five or more cards of the same suit (flush)
-  private evaluateFlush(): void {
-    const suitCounts = this.countSuits();
-
-    // Check if any suit appears 5 or more times
-    for (const suit in suitCounts) {
-      if (suitCounts[suit] >= 5) {
-        this.flush = true;
-        return;
-      }
-    }
   }
 
   // Check if the hand contains a straight flush
@@ -199,6 +173,53 @@ export class Evaluator {
     }
   }
 
+  // Check if the hand contains four of a kind of the same rank
+  private evaluateFourOfAKind(): void {
+    const rankCounts = this.countRanks();
+
+    // Check if any rank appears exactly 4 times
+    for (const rank in rankCounts) {
+      if (rankCounts[rank] === 4) {
+        this.fourOfAKind = true;
+        return;
+      }
+    }
+  }
+
+  // Check if the hand contains a full house (three of a kind and a pair)
+  private evaluateFullHouse(): void {
+    const rankCounts = this.countRanks();
+    let hasThreeOfAKind = false;
+    let hasPair = false;
+
+    // Check for three of a kind and pair in the hand
+    for (const rank in rankCounts) {
+      if (rankCounts[rank] === 3) {
+        hasThreeOfAKind = true;
+      } else if (rankCounts[rank] === 2) {
+        hasPair = true;
+      }
+    }
+
+    // If both three of a kind and pair are found, set fullHouse to true
+    if (hasThreeOfAKind && hasPair) {
+      this.fullHouse = true;
+    }
+  }
+
+  // Check if the hand contains five or more cards of the same suit (flush)
+  private evaluateFlush(): void {
+    const suitCounts = this.countSuits();
+
+    // Check if any suit appears 5 or more times
+    for (const suit in suitCounts) {
+      if (suitCounts[suit] >= 5) {
+        this.flush = true;
+        return;
+      }
+    }
+  }
+
   // Check if the hand contains five consecutive cards (straight)
   private evaluateStraight(): void {
     // Convert card ranks to numeric values
@@ -276,27 +297,6 @@ export class Evaluator {
     // If exactly two pairs are found, set twoPairs to true
     if (pairCount === 2) {
       this.twoPairs = true;
-    }
-  }
-
-  // Check if the hand contains a full house (three of a kind and a pair)
-  private evaluateFullHouse(): void {
-    const rankCounts = this.countRanks();
-    let hasThreeOfAKind = false;
-    let hasPair = false;
-
-    // Check for three of a kind and pair in the hand
-    for (const rank in rankCounts) {
-      if (rankCounts[rank] === 3) {
-        hasThreeOfAKind = true;
-      } else if (rankCounts[rank] === 2) {
-        hasPair = true;
-      }
-    }
-
-    // If both three of a kind and pair are found, set fullHouse to true
-    if (hasThreeOfAKind && hasPair) {
-      this.fullHouse = true;
     }
   }
 
