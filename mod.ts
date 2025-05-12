@@ -22,7 +22,7 @@ export class Evaluator {
   }
 
   // Method to evaluate the hand
-  evaluate(): void {
+  evaluate(): { rank: number; name: string; nameJp: string } {
     // Check for straight flush condition (includes royal flush)
     this.evaluateStraightFlush();
     // Check for full house condition
@@ -39,6 +39,29 @@ export class Evaluator {
     this.evaluateTwoPairs();
     // Check for pair condition
     this.evaluatePair();
+
+    // Return hand rank and name
+    if (this.royalFlush) {
+      return { rank: 9, name: "Royal flush", nameJp: "ロイヤルフラッシュ" };
+    } else if (this.straightFlush) {
+      return { rank: 8, name: "Straight flush", nameJp: "ストレートフラッシュ" };
+    } else if (this.fourOfAKind) {
+      return { rank: 7, name: "Four of a kind", nameJp: "フォーカード" };
+    } else if (this.fullHouse) {
+      return { rank: 6, name: "Full house", nameJp: "フルハウス" };
+    } else if (this.flush) {
+      return { rank: 5, name: "Flush", nameJp: "フラッシュ" };
+    } else if (this.straight) {
+      return { rank: 4, name: "Straight", nameJp: "ストレート" };
+    } else if (this.threeOfAKind) {
+      return { rank: 3, name: "Three of a kind", nameJp: "スリーカード" };
+    } else if (this.twoPairs) {
+      return { rank: 2, name: "Two pairs", nameJp: "ツーペア" };
+    } else if (this.pair) {
+      return { rank: 1, name: "Pair", nameJp: "ワンペア" };
+    } else {
+      return { rank: 0, name: "High card", nameJp: "ハイカード" };
+    }
   }
 
   // Helper method to count occurrences of each rank
