@@ -10,7 +10,7 @@ interface Card {
   suit: string;
 }
 
-interface EvaluatedHand {
+export interface EvaluatedHand {
   rank: number;
   name: string;
   nameJp: string;
@@ -756,6 +756,70 @@ export class Evaluator {
 
     // Take top 5 cards
     this.usedCards = sortedCards.slice(0, 5);
+  }
+  
+  /**
+   * Compare multiple hands and return relative strength of each hand
+   * @param hands Array of EvaluatedHand to compare
+   * @returns an array of shared gain chips, winner gets 1, loser gets 0, tie gets 0.5
+   */
+  public compare(hands: EvaluatedHand[]): number[] {
+    if (hands.length === 0) {
+      return [];
+    }
+
+    // Create a copy of the hands array with index
+    const handsWithIndex = hands.map((hand, index) => ({ hand, index }));
+
+    // Group hands by their strength
+    const strengthGroups: { [strength: string]: number[] } = {};
+
+    for (const { hand, index } of handsWithIndex) {
+      // Calculate a strength string for comparing hands
+      let strengthKey = `${hand.rank}`;
+      
+      // Add card values as part of the strength key
+      for (let i = 0; i < hand.usedCards.length; i++) {
+        const card = hand.usedCards[i];
+        strengthKey += `:${card.rank.value}`;
+      }
+      
+      if (!strengthGroups[strengthKey]) {
+        strengthGroups[strengthKey] = [];
+      }
+      
+      strengthGroups[strengthKey].push(index);
+    }
+
+    // Sort strength keys in descending order (highest strength first)
+    const sortedStrengths = Object.keys(strengthGroups).sort((a, b) => {
+      const valuesA = a.split(':').map(Number);
+      const valuesB = b.split(':').map(Number);
+      
+      // Compare each strength component
+      for (let i = 0; i < Math.min(valuesA.length, valuesB.length); i++) {
+        if (valuesA[i] !== valuesB[i]) {
+          return valuesB[i] - valuesA[i];
+        }
+      }
+      
+      return 0;
+    });
+
+    // Create result array (will contain 0 for losers, 1 for winners, 0.5 for ties)
+    const result = Array(hands.length).fill(0);
+
+    // Assign points to winners
+    if (sortedStrengths.length > 0) {
+      const winnersGroup = strengthGroups[sortedStrengths[0]];
+      const valueToAssign = winnersGroup.length > 1 ? 0.5 : 1;
+      
+      for (const winnerIndex of winnersGroup) {
+        result[winnerIndex] = valueToAssign;
+      }
+    }
+
+    return result;
   }
 }
 
