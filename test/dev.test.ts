@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { Cards, Evaluator } from "../mod.ts";
+import { Cards, Evaluator, getCardName } from "../mod.ts";
 
 Deno.test("Evaluate hand", () => {
   // 0. High card
@@ -12,6 +12,13 @@ Deno.test("Evaluate hand", () => {
     Cards["Qh"],
     Cards["Ad"],
   ];
+  const expectedUsedCards0 = [
+    Cards["Ad"],
+    Cards["Qh"],
+    Cards["Ts"],
+    Cards["8c"],
+    Cards["6d"],
+  ];
   const highCard = new Evaluator(cards0);
   const hand0 = highCard.evaluate();
   assertEquals(hand0.rank, 0, "The made hand is a high card");
@@ -20,6 +27,13 @@ Deno.test("Evaluate hand", () => {
     hand0.nameJp,
     "ハイカード",
     "The made hand name in Japanese is a high card",
+  );
+  assertEquals(
+    hand0.usedCards,
+    expectedUsedCards0,
+    `The made hand using cards are ${
+      expectedUsedCards0.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 
   // 1. Pair
@@ -32,6 +46,13 @@ Deno.test("Evaluate hand", () => {
     Cards["6h"],
     Cards["7d"],
   ];
+  const expectedUsedCards1 = [
+    Cards["As"],
+    Cards["Ah"],
+    Cards["7d"],
+    Cards["6h"],
+    Cards["4s"],
+  ];
   const pair = new Evaluator(cards1);
   const hand1 = pair.evaluate();
   assertEquals(hand1.rank, 1, "The made hand is a pair");
@@ -40,6 +61,13 @@ Deno.test("Evaluate hand", () => {
     hand1.nameJp,
     "ワンペア",
     "The made hand name in Japanese is ワンペア",
+  );
+  assertEquals(
+    hand1.usedCards,
+    expectedUsedCards1,
+    `The made hand using cards are ${
+      expectedUsedCards1.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 
   // 2. Two pairs
@@ -52,6 +80,13 @@ Deno.test("Evaluate hand", () => {
     Cards["4h"],
     Cards["6d"],
   ];
+  const expectedUsedCards2 = [
+    Cards["As"],
+    Cards["Ah"],
+    Cards["2d"],
+    Cards["2c"],
+    Cards["6d"],
+  ];
   const twoPair = new Evaluator(cards2);
   const hand2 = twoPair.evaluate();
   assertEquals(hand2.rank, 2, "The made hand is two pairs");
@@ -60,6 +95,13 @@ Deno.test("Evaluate hand", () => {
     hand2.nameJp,
     "ツーペア",
     "The made hand name in Japanese is ツーペア",
+  );
+  assertEquals(
+    hand2.usedCards,
+    expectedUsedCards2,
+    `The made hand using cards are ${
+      expectedUsedCards2.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 
   // 3. Three of a kind
@@ -71,6 +113,13 @@ Deno.test("Evaluate hand", () => {
     Cards["3s"],
     Cards["4h"],
     Cards["6d"],
+  ];
+  const expectedUsedCards3 = [
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["6d"],
+    Cards["4h"],
   ];
   const threeOfAKind = new Evaluator(cards3);
   const hand3 = threeOfAKind.evaluate();
@@ -85,6 +134,13 @@ Deno.test("Evaluate hand", () => {
     "スリーカード",
     "The made hand name in Japanese is スリーカード",
   );
+  assertEquals(
+    hand3.usedCards,
+    expectedUsedCards3,
+    `The made hand using cards are ${
+      expectedUsedCards3.map((card) => getCardName(card)).join(", ")
+    }`,
+  );
 
   // 4-1. Straight
   const cards41 = [
@@ -96,6 +152,13 @@ Deno.test("Evaluate hand", () => {
     Cards["Qh"],
     Cards["Kd"],
   ];
+  const expectedUsedCards41 = [
+    Cards["6s"],
+    Cards["5c"],
+    Cards["4d"],
+    Cards["3h"],
+    Cards["2s"],
+  ];
   const straight = new Evaluator(cards41);
   const hand41 = straight.evaluate();
   assertEquals(hand41.rank, 4, "The made hand is straight");
@@ -104,6 +167,13 @@ Deno.test("Evaluate hand", () => {
     hand41.nameJp,
     "ストレート",
     "The made hand name in Japanese is ストレート",
+  );
+  assertEquals(
+    hand41.usedCards,
+    expectedUsedCards41,
+    `The made hand using cards are ${
+      expectedUsedCards41.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 
   // 4-2. Straight with Ace low
@@ -115,6 +185,13 @@ Deno.test("Evaluate hand", () => {
     Cards["5s"],
     Cards["Qh"],
     Cards["Kd"],
+  ];
+  const expectedUsedCards42 = [
+    Cards["5s"],
+    Cards["4c"],
+    Cards["3d"],
+    Cards["2h"],
+    Cards["As"],
   ];
   const straightWithAceLow = new Evaluator(cards42);
   const hand42 = straightWithAceLow.evaluate();
@@ -129,6 +206,13 @@ Deno.test("Evaluate hand", () => {
     "ストレート",
     "The made hand name in Japanese is ストレート",
   );
+  assertEquals(
+    hand42.usedCards,
+    expectedUsedCards42,
+    `The made hand using cards are ${
+      expectedUsedCards42.map((card) => getCardName(card)).join(", ")
+    }`,
+  );
 
   // 5. Flush
   const cards5 = [
@@ -140,6 +224,13 @@ Deno.test("Evaluate hand", () => {
     Cards["Qh"],
     Cards["Ad"],
   ];
+  const expectedUsedCards5 = [
+    Cards["Ts"],
+    Cards["8s"],
+    Cards["6s"],
+    Cards["4s"],
+    Cards["2s"],
+  ];
   const flush = new Evaluator(cards5);
   const hand5 = flush.evaluate();
   assertEquals(hand5.rank, 5, "The made hand is flush");
@@ -148,6 +239,13 @@ Deno.test("Evaluate hand", () => {
     hand5.nameJp,
     "フラッシュ",
     "The made hand name in Japanese is フラッシュ",
+  );
+  assertEquals(
+    hand5.usedCards,
+    expectedUsedCards5,
+    `The made hand using cards are ${
+      expectedUsedCards5.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 
   // 6. Full house
@@ -160,6 +258,13 @@ Deno.test("Evaluate hand", () => {
     Cards["6h"],
     Cards["7d"],
   ];
+  const expectedUsedCards6 = [
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["2s"],
+    Cards["2c"],
+  ];
   const fullHouse = new Evaluator(cards6);
   const hand6 = fullHouse.evaluate();
   assertEquals(hand6.rank, 6, "The made hand is full house");
@@ -168,6 +273,13 @@ Deno.test("Evaluate hand", () => {
     hand6.nameJp,
     "フルハウス",
     "The made hand name in Japanese is フルハウス",
+  );
+  assertEquals(
+    hand6.usedCards,
+    expectedUsedCards6,
+    `The made hand using cards are ${
+      expectedUsedCards6.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 
   // 7. Four of a kind
@@ -179,6 +291,13 @@ Deno.test("Evaluate hand", () => {
     Cards["2s"],
     Cards["2h"],
     Cards["2d"],
+  ];
+  const expectedUsedCards7 = [
+    Cards["As"],
+    Cards["Ah"],
+    Cards["Ad"],
+    Cards["Ac"],
+    Cards["2s"],
   ];
   const fourOfAKind = new Evaluator(cards7);
   const hand7 = fourOfAKind.evaluate();
@@ -193,6 +312,13 @@ Deno.test("Evaluate hand", () => {
     "フォーカード",
     "The made hand name in Japanese is フォーカード",
   );
+  assertEquals(
+    hand7.usedCards,
+    expectedUsedCards7,
+    `The made hand using cards are ${
+      expectedUsedCards7.map((card) => getCardName(card)).join(", ")
+    }`,
+  );
 
   // 8. Straight flush
   const cards8 = [
@@ -203,6 +329,13 @@ Deno.test("Evaluate hand", () => {
     Cards["6s"],
     Cards["Qh"],
     Cards["Kd"],
+  ];
+  const expectedUsedCards8 = [
+    Cards["6s"],
+    Cards["5s"],
+    Cards["4s"],
+    Cards["3s"],
+    Cards["2s"],
   ];
   const straightFlush = new Evaluator(cards8);
   const hand8 = straightFlush.evaluate();
@@ -217,6 +350,13 @@ Deno.test("Evaluate hand", () => {
     "ストレートフラッシュ",
     "The made hand name in Japanese is ストレートフラッシュ",
   );
+  assertEquals(
+    hand8.usedCards,
+    expectedUsedCards8,
+    `The made hand using cards are ${
+      expectedUsedCards8.map((card) => getCardName(card)).join(", ")
+    }`,
+  );
 
   // 9. Royal flush
   const cards9 = [
@@ -227,6 +367,13 @@ Deno.test("Evaluate hand", () => {
     Cards["As"],
     Cards["2h"],
     Cards["3d"],
+  ];
+  const expectedUsedCards9 = [
+    Cards["As"],
+    Cards["Ks"],
+    Cards["Qs"],
+    Cards["Js"],
+    Cards["Ts"],
   ];
   const royalFlush = new Evaluator(cards9);
   const hand9 = royalFlush.evaluate();
@@ -240,5 +387,12 @@ Deno.test("Evaluate hand", () => {
     hand9.nameJp,
     "ロイヤルフラッシュ",
     "The made hand name in Japanese is ロイヤルフラッシュ",
+  );
+  assertEquals(
+    hand9.usedCards,
+    expectedUsedCards9,
+    `The made hand using cards are ${
+      expectedUsedCards9.map((card) => getCardName(card)).join(", ")
+    }`,
   );
 });
