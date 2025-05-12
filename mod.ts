@@ -4,15 +4,15 @@ interface Rank {
   value: number;  // Numeric value of the rank (14 for Ace high, 13 for King, etc.)
 }
 
-// Define valid ranks and suits
-const VALID_RANKS: string[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
-const VALID_SUITS: string[] = ['s', 'h', 'd', 'c'];
-
 // Define card interface with Rank
 interface Card {
   rank: Rank;
   suit: string;
 }
+
+// Define valid ranks and suits
+const VALID_RANKS: string[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
+const VALID_SUITS: string[] = ['s', 'h', 'd', 'c'];
 
 // Create Rank objects for all possible ranks
 const Ranks: { [key: string]: Rank } = {
@@ -134,7 +134,7 @@ export class Evaluator {
   }
 
   // Method to evaluate the hand
-  evaluate(): { rank: number; name: string; nameJp: string } {
+  public evaluate(): { rank: number; name: string; nameJp: string } {
     // Check for straight flush condition (includes royal flush)
     this.evaluateStraightFlush();
     // Check for four of a kind condition
