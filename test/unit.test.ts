@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { Cards, Evaluator, getCardName } from "../mod.ts";
+import { Cards, Evaluator, getCardName } from "../src/index.ts";
 
 Deno.test("Evaluate hand", () => {
   // 0. High card

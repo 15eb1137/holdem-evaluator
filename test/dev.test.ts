@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import Evaluator, { Cards, type EvaluatedHand } from "../mod.ts";
+import Evaluator, { Cards, type EvaluatedHand } from "../src/index.ts";
 
 Deno.test("Compare hands", () => {
   const board0 = [
